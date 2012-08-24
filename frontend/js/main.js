@@ -11,4 +11,22 @@ $(function() {
     socket.on('results', function (track, user) {
         console.log('result', track, user);
     });
+    
+    $("#login").show();
+    $("#mainscreen").hide();
+    
+    $("#login_button").click(function() {
+        lastfm.getUserImage($("#username").val(), function(image) {
+            lastfm.getTopTracks($("#username").val(), function(topTracks) {
+                $("#login").hide();
+                $("#mainscreen").show();
+                for (var i=0;i<3;i++) {
+                    var trk=topTracks[i];
+                    $("#tracks").append(templates.trackElement(trk.artist,trk.track,trk.image));
+                }
+            });
+        });
+        return false;
+    });
+
 });

@@ -16,40 +16,33 @@
         
         <script src="http://ec2-46-137-143-82.eu-west-1.compute.amazonaws.com:8080/socket.io/socket.io.js"></script>
         <script src="js/main.js" type="text/javascript"></script>
+        <script src="js/lastfm.js" type="text/javascript"></script>
+        <script src="js/templates.js" type="text/javascript"></script>
     </head>
     <body>
         <article id="login">
            <h1>Login</h1>
            <p>Log in with your Last.fm username</p>
            <div class="fs_dataentry">
-             <input type="text" name="username" value="" /><br />
+             <input type="text" id="username" name="username" value="" /><br />
              <input type="submit" id="login_button" value="Start" />
            </div>
         </article>
         <article id="mainscreen">
             <h3>Choose the ...</h3>
             <h1><strong>Fastest</strong> track</h3>
-            <div class="track">
-                <div class="track_image">
-                    <img src="http://userserve-ak.last.fm/serve/64s/68728476.jpg" />
-                </div>
-                <div class="artist">Heretics</div>
-                <div class="title">Beyond Hope</div>
-            </div>
-            <div class="track">
-                <div class="track_image">
-                    <img src="http://userserve-ak.last.fm/serve/64s/68728476.jpg" />
-                </div>
-                <div class="artist">Demoscene Time Machine</div>
-                <div class="title">Skull Coins pt. 1</div>
-            </div>
-            <div class="track">
-                <div class="track_image">
-                    <img src="http://userserve-ak.last.fm/serve/64s/68728476.jpg" />
-                </div>
-                <div class="artist">Spectral Theory</div>
-                <div class="title">Axiom</div>
+            <div id="tracks">
             </div>
         </article>
+        
+        <div id="templates" style="display:none;">
+            <div class="track">
+                <div class="track_image">
+                    <img class="img" src="" />
+                </div>
+                <div class="artist">{artist}</div>
+                <div class="title">{track}</div>
+            </div>
+        </div>
     </body>
 </html>
