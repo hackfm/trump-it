@@ -32,6 +32,9 @@ article {
         margin-left:20px;
     }
 }
+h3 {
+    margin-left: 20px;
+}
 
 .fs_dataentry {
     input {
@@ -52,7 +55,9 @@ article {
 }
 
 .track {
+    
     width:90%;
+    min-height:65px;
     margin-left:auto;
     margin-right:auto;
     padding:5px;
@@ -64,7 +69,15 @@ article {
     }
     .title {
         font-weight:bold;
-        }
+    }
+    .track_image {
+        width:64px;
+        height:64px;
+        overflow:hidden;
+        border:1px solid @detail;
+        float:left;
+        margin-right:10px;
+    }
     background-color: @alt2;
     border: 1px solid @detail;
     border-radius:10px;
