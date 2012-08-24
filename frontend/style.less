@@ -3,7 +3,7 @@
 @detail: #4C646B;
 @foreground: #FFF7F5;
 @alt1: #FF9F67;
-@alt2: #A84B3A;
+@alt2: #662E23;
 
 body {
     font-family: "Open Sans", sans-serif;
@@ -37,11 +37,39 @@ article {
     input {
         width:100%;
         font-size:2em;
+        border-radius:4px;
+        background-color: @backbackground;
+        color: @foreground;
+        margin-bottom:10px;
+    }
+    input[type=submit] {
+        background-color: @alt2;
     }
     width:80%;
     max-width:320px;
     margin-left: auto;
     margin-right: auto;
+}
+
+.track {
+    width:90%;
+    margin-left:auto;
+    margin-right:auto;
+    padding:5px;
+    div {
+        font-size:1.3em;
+    }
+    .artist {
+        font-style:italic;
+    }
+    .title {
+        font-weight:bold;
+        }
+    background-color: @alt2;
+    border: 1px solid @detail;
+    border-radius:10px;
+    margin-top:5px;
+    margin-bottom:5px;
 }
 
 
