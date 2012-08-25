@@ -40,7 +40,7 @@ class Game extends EventEmitter
                 buffer += chunk
             r.on 'end', () ->
                 res = buffer.match /\<track id="([\d]+)"\>/
-                if (res.length>1)
+                if (res && (res instanceof Array) && (res.length>1))
                     callback 'http://previews.7digital.com/clips/34/'+res[1]+'.clip.mp3'
 
         .on 'error', (e) ->
@@ -67,7 +67,7 @@ class Game extends EventEmitter
             
        
             # find winners. This messes up the ordering, so make sure you sort it by score afterwards
-            @users.sort (a, b) ->
+            @users.sort (a, b) =>
                 if (b.value == null)
                     return -1
                 if (a.value == null)
@@ -100,7 +100,7 @@ class Game extends EventEmitter
                 console.log 'result: no winner this round'
                 @emit 'results', null, null, @users
             else
-                console.log 'results: ', winner.name, winner.track.track
+                console.log 'results: ', winner.name, winner.track.title
                 @emit 'results', winner, winner.track, @users
 
                 # get preview url 
@@ -186,6 +186,12 @@ io.sockets.on 'connection', (socket) ->
 
         onPreview = (url) ->
             socket.emit 'preview', url
+            setTimeout () ->
+                socket.emit 'previewPlay'
+            ,3000
+            setTimeout () ->
+                socket.emit 'previewStop'
+            ,30000
 
         # Only allow one connection per user
         onUserJoin = (name) ->

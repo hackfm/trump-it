@@ -15,6 +15,8 @@ var templates=function() {
         element.find(".score").text(score);
         element.find("img").attr("src",image);
         element.find("img").attr("alt",name);
+        element.attr('href', 'http://www.last.fm/user/'+encodeURIComponent(name));
+        element.attr('title', name);
         return element;
     }
     
