@@ -157,3 +157,14 @@ footer .userForLeaderboard .score {
   font-size: 2em;
   color: #4c646b;
 }
+a {
+  color: #ff9f67;
+}
+.foot {
+  clear: both;
+  text-align: center;
+  padding-top: 20px;
+}
+.foot .credits {
+  margin-top: 15px;
+}
