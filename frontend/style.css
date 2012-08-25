@@ -5,12 +5,14 @@ body {
   width: 100%;
 }
 .app_title {
-  font-size: 2em;
-  font-style: italic;
+  width: 169px;
+  height: 33px;
+  background: url(logo.png) no-repeat center center;
   float: right;
   margin-top: 0px;
-  font-family: monospace;
-  color: #7b99a2;
+}
+.app_title span {
+  display: none;
 }
 #body_container {
   width: 90%;
