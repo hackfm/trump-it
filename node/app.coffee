@@ -63,8 +63,6 @@ class Game extends EventEmitter
 
         # Wait for the game to end
         setTimeout =>
-
-            
        
             # find winners. This messes up the ordering, so make sure you sort it by score afterwards
             @users.sort (a, b) =>
@@ -85,27 +83,33 @@ class Game extends EventEmitter
                     @users[i].score += score
 
 
-            # Determin winner, if there is one
-            winner = null;
+            # Determin winners, if there are any
+            winners = [];
             if (@users.length > 0)
-                console.log(@users[0].value)
-                if (@users[0].value != null)
-                    winner = @users[0]
+                len = Math.min(@users.length, 3) - 1;
+                for i in [0..len]
+                    if (@users[i])
+                        if (@users[i].value != null)
+                            winners.push @users[i]
+
+            console.log winners
 
             # Sort users back to score
             @sortUsers();
 
             # Send the stuff down the wire
-            if (winner == null) 
+            if (winners.length == 0) 
                 console.log 'result: no winner this round'
-                @emit 'results', null, null, @users
             else
-                console.log 'results: ', winner.name, winner.track.title
-                @emit 'results', winner, winner.track, @users
+                console.log 'winner #0:', winners[0].name
 
                 # get preview url 
-                @getPreviewURL winner.track.artist, winner.track.title, (r) =>
+                @getPreviewURL winners[0].track.artist, winners[0].track.title, (r) =>
                     @emit 'preview', r
+            
+            @emit 'results', winners, @users    
+
+                
         ,15000
 
     sortUsers: =>
