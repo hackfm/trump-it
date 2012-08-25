@@ -16,9 +16,11 @@ $(function() {
     }
     
     function startRound(selectedTracks,category) {
-        $("#login").hide();
+        $("article").hide();
         $("#mainscreen").show();
-        $('.result_screen').hide();
+        
+        $("#round_description").html(features.getDescription(category));
+        
         $("#tracks").empty();
         $.each(selectedTracks, function(i, trk) {
             $("#tracks").append(templates.trackElement(trk.artist,trk.track,trk.image,trk.features[category]));

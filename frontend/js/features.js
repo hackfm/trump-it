@@ -9,6 +9,10 @@ var features = function() {
         'danceability': "Most <strong>Danceable</strong> track"
     }
     
+    function getDescription(feature) {
+        return featureDescriptions[feature];
+    }
+    
     function getFeatures(artist, title, callback) {
         lastfm.getAudioFeatures(artist,title,function(audioFeatures) {
             if (audioFeatures!=null) {
@@ -21,6 +25,7 @@ var features = function() {
         });
     }
     return {
-        getFeatures:getFeatures
+        "getFeatures":getFeatures,
+        "getDescription":getDescription
     };
 }();
