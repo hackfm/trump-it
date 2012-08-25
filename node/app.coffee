@@ -45,7 +45,7 @@ class Game extends EventEmitter
                     return -1
                 if (a.value == null)
                     return 1
-                return a.value - b.value
+                return b.value - a.value
 
             # Add Score to users
             scores = [5, 2, 1]
@@ -78,7 +78,7 @@ class Game extends EventEmitter
 
     sortUsers: =>
         @users.sort (a, b) ->
-            return a.score - b.score
+            return b.score - a.score
 
     pickRandomFeature: =>
         i = Math.floor(Math.random() * features.length);
