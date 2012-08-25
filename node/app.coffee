@@ -12,6 +12,8 @@ features = [
     'danceability'
 ]
 
+parities = ['+', '-']
+
 class Game extends EventEmitter
     constructor: ->
         @setMaxListeners 0
@@ -27,14 +29,15 @@ class Game extends EventEmitter
     gameStart: =>
 
         # Pick category
-        @feature = @pickRandomFeature();
+        @feature = @pickRandomFeature()
+        @parity = @pickRandomParity()
 
         # Remove all those values and tracks from user objects
         @cleanUpValueOnUsers();
 
         # Send event
-        @emit 'start', @feature
-        console.log 'start. Feature picked is:', @feature
+        @emit 'start', @feature, @parity
+        console.log 'start. Feature picked is:', @feature, 'parity:', @parity
 
         # Wait for the game to end
         setTimeout =>
@@ -81,9 +84,19 @@ class Game extends EventEmitter
 
     pickRandomFeature: =>
         i = Math.floor(Math.random() * features.length);
-        return features[i]       
+        return features[i]     
+
+    pickRandomParity: =>
+        i = Math.floor(Math.random() * parities.length);
+        return parities[i]    
 
     userJoin: (name, image) =>
+        # no double joining, please
+        for user in @users
+            if (user.name == name) 
+                return user
+
+        # add user
         userObj = {
             name: name
             image: image
@@ -125,8 +138,8 @@ io.sockets.on 'connection', (socket) ->
 
         userObj = game.userJoin(user.name, user.image);
 
-        onStart = (feature) ->
-            socket.emit 'start', feature
+        onStart = (feature, parity) ->
+            socket.emit 'start', feature, parity
 
         onResult = (winner, track, users) ->
             socket.emit 'results', winner, track, users
