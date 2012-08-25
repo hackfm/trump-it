@@ -103,7 +103,8 @@ $(function() {
 
                     var topTracks = shuffle(tt);
                     fetchFeatures(topTracks);
-                    socket.on('start', function (category) {
+                    socket.on('start', function (feature,parity) {
+                        var category = {"feature":feature, "parity":parity};
                         if (tracksWithData.length<3) return;
                         console.log('start');
                         selectTracks(tracksWithData, category);
