@@ -26,7 +26,7 @@
      inkscape:pageshadow="2"
      inkscape:zoom="1.979899"
      inkscape:cx="189.06765"
-     inkscape:cy="911.86112"
+     inkscape:cy="1012.8764"
      inkscape:document-units="px"
      inkscape:current-layer="g3851-8"
      showgrid="false"
@@ -162,7 +162,10 @@
            sodipodi:rx="18.940361"
            sodipodi:ry="18.940361"
            d="m 264.15488,84.88858 c 0,10.460473 -8.47988,18.94036 -18.94036,18.94036 -10.46047,0 -18.94036,-8.479887 -18.94036,-18.94036 0,-10.460472 8.47989,-18.940361 18.94036,-18.940361 10.46048,0 18.94036,8.479889 18.94036,18.940361 z"
-           transform="translate(20.203047,-1.0101525)" />
+           transform="translate(20.203047,-1.0101525)"
+           inkscape:export-filename="/home/davidaw/hackdays/mhdscotland/trump-it/frontend/logo.png"
+           inkscape:export-xdpi="74.205383"
+           inkscape:export-ydpi="74.205383" />
         <path
            sodipodi:type="arc"
            style="fill:none;stroke:#7b99a2;stroke-width:5.66932269;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
@@ -172,18 +175,27 @@
            sodipodi:rx="18.940361"
            sodipodi:ry="18.940361"
            d="m 264.15488,84.88858 c 0,10.460473 -8.47988,18.94036 -18.94036,18.94036 -10.46047,0 -18.94036,-8.479887 -18.94036,-18.94036 0,-10.460472 8.47989,-18.940361 18.94036,-18.940361 10.46048,0 18.94036,8.479889 18.94036,18.940361 z"
-           transform="matrix(0.26458187,0,0,0.26458187,200.03319,61.418451)" />
+           transform="matrix(0.26458187,0,0,0.26458187,200.03319,61.418451)"
+           inkscape:export-filename="/home/davidaw/hackdays/mhdscotland/trump-it/frontend/logo.png"
+           inkscape:export-xdpi="74.205383"
+           inkscape:export-ydpi="74.205383" />
         <path
            style="fill:none;stroke:#7b99a2;stroke-width:1.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;stroke-miterlimit:4;stroke-dasharray:none"
            d="M 263.14474,79.080205 258.59905,66.958374"
            id="path3779-58"
-           inkscape:connector-curvature="0" />
+           inkscape:connector-curvature="0"
+           inkscape:export-filename="/home/davidaw/hackdays/mhdscotland/trump-it/frontend/logo.png"
+           inkscape:export-xdpi="74.205383"
+           inkscape:export-ydpi="74.205383" />
         <path
            style="fill:none;stroke:#7b99a2;stroke-width:1.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;stroke-miterlimit:4;stroke-dasharray:none"
            d="m 266.93281,79.585282 -4.54569,-13.63706"
            id="path3779-8-2"
            inkscape:connector-curvature="0"
-           sodipodi:nodetypes="cc" />
+           sodipodi:nodetypes="cc"
+           inkscape:export-filename="/home/davidaw/hackdays/mhdscotland/trump-it/frontend/logo.png"
+           inkscape:export-xdpi="74.205383"
+           inkscape:export-ydpi="74.205383" />
       </g>
     </g>
   </g>
