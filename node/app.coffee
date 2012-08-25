@@ -2,68 +2,145 @@ io = require('socket.io').listen 8080
 
 EventEmitter = require('events').EventEmitter
 
+features = [
+    'listeners',
+    'scrobbles',
+    'bpm',
+    'loudness',
+    'energy',
+    'percussiveness',
+    'danceability'
+]
+
 class Game extends EventEmitter
     constructor: ->
-        console.log 'construct'
         @setMaxListeners 0
 
-        @feature = @pickRandomFeature();
+        # User List
+        @users = []
 
         # Game Timer
         setInterval @gameStart, 30000;
-
         @gameStart();
 
-        # User List, fake for now
-        @users = [
-            {
-                name: 'Davw'
-                image: 'http://userserve-ak.last.fm/serve/64s/68728476.jpg'
-                score: 14
-            },
-            {
-                name: 'Marekventur'
-                image: 'http://userserve-ak.last.fm/serve/64s/68293968.jpg'
-                score: 10
-            }
-        ]
-
+    # Happens every 30 seconds
     gameStart: =>
-        
 
         # Pick category
         @feature = @pickRandomFeature();
 
+        # Remove all those values and tracks from user objects
+        @cleanUpValueOnUsers();
+
         # Send event
         @emit 'start', @feature
-        console.log 'start', @feature
+        console.log 'start. Feature picked is:', @feature
 
         # Wait for the game to end
         setTimeout =>
-            @emit 'results', @users[0], {track: 'Down Under', artist: 'Men at Work', feature: @feature, value: 123}
-            console.log 'results', @users[0], {track: 'Down Under', artist: 'Men at Work', feature: @feature, value: 123}
+            
+            # find winners. This messes up the ordering, so make sure you sort it by score afterwards
+            @users.sort (a, b) ->
+                if (b.value == null)
+                    return 1
+                if (a.value == null)
+                    return -1
+                return a.value - b.value
+
+            # Add Score to users
+            scores = [5, 2, 1]
+            i = 0;
+            for score in scores 
+                if (@users.length < i && @users[i].value != null)
+                    @users[i].score += score
+
+            # Determin winner, if there is one
+            winner = null;
+            if (@users.length > 0 && @users[0].value != null)
+                winner = user[0]
+
+            # Sort users back to score
+            @sortUsers();
+
+            # Send the stuff down the wire
+            if (winner == null) 
+                console.log 'result: no winner this round'
+                @emit 'results', null, null, @users
+            else
+                console.log 'results: ', winner.name, winner.track.name
+                @emit 'results', winner, winner.track, @users
         ,15000
 
-    getUsers: =>
-        # TODO Sort
-        return @users
+    sortUsers: =>
+        @users.sort (a, b) ->
+            return a.score - b.score
 
     pickRandomFeature: =>
-        return 'BPM'        
+        i = Math.floor(Math.random() * features.length);
+        return features[i]       
+
+    userJoin: (name, image) =>
+        userObj = {
+            name: name
+            image: image
+            score: 0
+            value: null
+            track: null
+        }
+        @users.push userObj
+        return userObj
+
+    cleanUpValueOnUsers: () =>
+        for user in @users
+            do (user) ->
+                user.value = null;
+                user.track = null;
+
+    # It's a bit stupid, but deleting elements from an array in JS is baaaah.
+    userLeave: (user) =>
+        name = user.name
+        newList = [];
+        for user in @users
+            do (user) ->
+                if (user.name != name) 
+                    newList.push user
+
+        @users = newList;
+
 
 # Start the game
 game = new Game();
 
 # Sockets 
 io.sockets.on 'connection', (socket) ->
-    game.on 'start', (feature) ->
-        socket.emit 'start', feature
 
-    game.on 'results', (user, track) ->
-        socket.emit 'results', user, track
+    socket.on 'join', (user) ->
+        console.log 'user joined', user.name
 
-    #socket.on 'my other event', (data) ->
-    #    console.log data
+        userObj = game.userJoin(user.name, user.image);
+
+        onStart = (feature) ->
+            socket.emit 'start', feature
+
+        onResult = (winner, track, users) ->
+            socket.emit 'results', winner, track, users
+
+        game.on 'start', onStart
+        game.on 'results', onResult
+
+        # User has made his choice
+        socket.on 'picked', (track, value) ->
+            console.log('user picked a track', track.name, value)
+            userObj.track = track
+            userObj.value = value
+
+        # Clean up on disconnect
+        socket.on 'disconnect', () ->
+            console.log('user left', user.name)
+            game.removeListener 'start', onStart
+            game.removeListener 'results', onResult
+            game.userLeave(user);
+
 
 # Less debug
 io.set('log level', 1);
