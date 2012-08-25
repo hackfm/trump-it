@@ -20,6 +20,8 @@
         <script src="js/features.js" type="text/javascript"></script>
     </head>
     <body>
+      <div id="body_container">
+        <h1 class="app_title">trkatk.com</h1>
         <article id="login">
            <h1>Login</h1>
            <div id="login_form">
@@ -63,20 +65,20 @@
         </article>
 
         <footer></footer>
-        
-        <div id="templates" style="display:none;">
-            <div class="track">
-                <div class="track_image">
-                    <img class="img" src="" />
-                </div>
-                <div class="artist">{artist}</div>
-                <div class="title">{track}</div>
-                <div class="display_score" style="display:none;">{display_score}</div>
+    </div>
+    <div id="templates" style="display:none;">
+        <div class="track">
+            <div class="track_image">
+                <img class="img" src="" />
             </div>
-            <div class="userForLeaderboard">
-                <img src="" alt="{username}" />
-                <div class="score">{score}</div>
-            </div>
+            <div class="artist">{artist}</div>
+            <div class="title">{track}</div>
+            <div class="display_score" style="display:none;">{display_score}</div>
         </div>
+        <div class="userForLeaderboard">
+            <img src="" alt="{username}" />
+            <div class="score">{score}</div>
+        </div>
+    </div>
     </body>
 </html>

@@ -4,12 +4,22 @@ body {
   color: #fff7f5;
   width: 100%;
 }
-article {
-  background-color: #000000;
+.app_title {
+  font-size: 2em;
+  font-style: italic;
+  float: right;
+  margin-top: 0px;
+  font-family: monospace;
+  color: #7b99a2;
+}
+#body_container {
   width: 90%;
   max-width: 600px;
   margin-left: auto;
   margin-right: auto;
+}
+article {
+  padding-top: 10px;
 }
 article p {
   padding: 10px;
