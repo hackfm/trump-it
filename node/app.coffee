@@ -91,10 +91,11 @@ class Game extends EventEmitter
         return parities[i]    
 
     userJoin: (name, image) =>
+        @emit 'userJoin', name
+
         # no double joining, please
         for user in @users
             if (user.name == name) 
-                user.connections++
                 return user
 
         # add user
@@ -104,7 +105,6 @@ class Game extends EventEmitter
             score: 0
             value: null
             track: null
-            connections: 1
         }
         @users.push userObj
         return userObj
@@ -118,18 +118,16 @@ class Game extends EventEmitter
 
     # It's a bit stupid, but deleting elements from an array in JS is baaaah.
     userRemoveConnection: (user) =>
-        user.connections--
 
-        if (user.connections == 0)
-            name = user.name
-            newList = [];
-            for user in @users
-                do (user) ->
-                    if (user.name != name) 
-                        newList.push user
+        name = user.name
+        newList = [];
+        for user in @users
+            do (user) ->
+                if (user.name != name) 
+                    newList.push user
 
-            @users = newList;
-            @emit 'users'
+        @users = newList;
+        @emit 'users'
 
 
 # Start the game
@@ -152,9 +150,16 @@ io.sockets.on 'connection', (socket) ->
         onUsers = () ->
             socket.emit 'users', game.users
 
+        # Only allow one connection per user
+        onUserJoin = (name) ->
+            if (name == user.name)
+                console.log 'force disconnect', name
+                socket.disconnect();
+
         game.on 'start', onStart
         game.on 'results', onResult
         game.on 'users', onUsers
+        game.on 'userJoin', onUserJoin
 
         # Show them what we got...
         onUsers();
@@ -165,13 +170,17 @@ io.sockets.on 'connection', (socket) ->
             userObj.track = track
             userObj.value = value
 
-        # Clean up on disconnect
-        socket.on 'disconnect', () ->
+        onDisconnect = () ->
             console.log('user left', user.name)
             game.removeListener 'start', onStart
             game.removeListener 'results', onResult
             game.removeListener 'users', onUsers
             game.userRemoveConnection(user);
+
+        # Clean up on disconnect
+        socket.on 'disconnect', onDisconnect
+        socket.on 'error', onDisconnect
+            
 
 
 # Less debug
