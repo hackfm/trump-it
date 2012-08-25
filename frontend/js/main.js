@@ -104,8 +104,56 @@ $(function() {
             $footer.append(templates.userForLeaderboardElement(user.name, user.image, user.score));
         }    
     }
+    function start(tt,username,image) {
+        // We only need to connect after all that data-stuff is sorted 
+        socket = io.connect(SOCKET_IO_ADDR);
+        socket.on('connect', function() {
+            socket.emit('join', {"name": username, "image": image});
+
+            $('#spinner_text').text('Please wait for the next round to start...');
+
+            var topTracks = shuffle(tt);
+            fetchFeatures(topTracks);
+            socket.on('start', function (feature,parity) {
+                var category = {"feature":feature, "parity":parity};
+                if (tracksWithData.length<3) return;
+                console.log('start');
+                selectTracks(tracksWithData, category);
+            });
+
+            socket.on('results', function (winners, users) {
+                console.log('result', winners, users);
+                showResults(winners, users);
+            });
+
+            socket.on('users', function (users) {
+                console.log('users, count:', users)
+                updateLeaderboard(users);
+            });
+
+            socket.on('preview', function (url) {
+                //Audio
+                console.log('preview', url);
+                $('#preview_audio').attr('src', url).get(0);
+            });
+
+            socket.on('previewPlay', function () {
+                console.log('previewPlay');
+                $('#preview_audio').get(0).play();
+            });
+
+            socket.on('previewStop', function () {
+                console.log('previewStop');
+                $('#preview_audio').attr('src', '')
+            });
+
+            socket.on('disconnect', function() {
+                // window.location.reload();
+            });
+        });
+    }
     
-    $("#login_button").click(function() {
+    function logInLastfm() {
         // Start spinner
         $('#login_form').hide();
         $('#login_spinner').show();
@@ -114,59 +162,33 @@ $(function() {
 
         // TODO: Add "wrong-username"-callback
         lastfm.getUserImage(username, function(image) {
-        
             lastfm.getTopTracks(username, function(tt) {
-
-                // We only need to connect after all that data-stuff is sorted 
-                socket = io.connect(SOCKET_IO_ADDR);
-                socket.on('connect', function() {
-                    socket.emit('join', {"name": username, "image": image});
-
-                    $('#spinner_text').text('Please wait for the next round to start...');
-
-                    var topTracks = shuffle(tt);
-                    fetchFeatures(topTracks);
-                    socket.on('start', function (feature,parity) {
-                        var category = {"feature":feature, "parity":parity};
-                        if (tracksWithData.length<3) return;
-                        console.log('start');
-                        selectTracks(tracksWithData, category);
-                    });
-
-                    socket.on('results', function (winners, users) {
-                        console.log('result', winners, users);
-                        showResults(winners, users);
-                    });
-
-                    socket.on('users', function (users) {
-                        console.log('users, count:', users)
-                        updateLeaderboard(users);
-                    });
-
-                    socket.on('preview', function (url) {
-                        //Audio
-                        console.log('preview', url);
-                        $('#preview_audio').attr('src', url).get(0);
-                    });
-
-                    socket.on('previewPlay', function () {
-                        console.log('previewPlay');
-                        $('#preview_audio').get(0).play();
-                    });
-
-                    socket.on('previewStop', function () {
-                        console.log('previewStop');
-                        $('#preview_audio').attr('src', '')
-                    });
-
-                    socket.on('disconnect', function() {
-                        // window.location.reload();
-                    });
-                });
-                
+                start(tt,username,image);
             });
         });
         return false;
+    }
+    
+    function logInAnon() {  // Start spinner
+        $('#login_form').hide();
+        $('#login_spinner').show();
+        
+        var username="Guest_"+ Math.floor(Math.random()*2000);
+        var image = "http://placekitten.com/g/64/64";
+        
+        lastfm.getGlobalTracks(function(tt) {
+            start(tt,username,image);
+        });
+    }
+    
+    
+    $("#login_form").submit(function() {
+        logIn();
+        return false;
+    });
+    
+    $("#anon_button").click(function() {
+        logInAnon();
     });
     
     $("#login").show();
