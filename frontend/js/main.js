@@ -14,20 +14,18 @@ $(function() {
         console.log('result', track, user);
     });
     
-    function getAudioFeatures(track, category) {
+    
+    function selectTracks(tracklist, category, callback) {
+        selectedTracks=[tracklist.pop(),tracklist.pop(),tracklist.pop()];
+        startRound(selectedTracks,category);
     }
     
-    function selectTracks(topTracks, category, callback) {
-        selectedTracks=[topTracks.pop(),topTracks.pop(),topTracks.pop()];
-        callback(selectedTracks);
-    }
-    
-    function startRound(selectedTracks) {
+    function startRound(selectedTracks,category) {
         $("#login").hide();
         $("#mainscreen").show();
         $("#tracks").empty();
         $.each(selectedTracks, function(i, trk) {
-            $("#tracks").append(templates.trackElement(trk.artist,trk.track,trk.image, 4.4823));
+            $("#tracks").append(templates.trackElement(trk.artist,trk.track,trk.image,trk.features[category]));
         });
         $("#tracks").find(".track").click(function() {
             var title = $(this).find(".title").text();
@@ -46,8 +44,21 @@ $(function() {
         });
     }
     
-    $("#login").show();
-    $("#mainscreen").hide();
+    var tracksWithData=[];
+    function fetchFeatures(topTracks) {
+        if (topTracks.length==0) {
+            return;
+        }
+        var trk=topTracks.pop();
+        features.getFeatures(trk.artist,trk.track, function(feat) {
+            if (feat!=null) {
+                tracksWithData.push($.extend({},trk,{features: feat}));
+            }
+            fetchFeatures(topTracks);
+        });
+    }
+    
+    
     
     $("#login_button").click(function() {
         var username=$("#username").val();
@@ -55,14 +66,18 @@ $(function() {
             socket.emit('join', {"name": username, "image": image});
             lastfm.getTopTracks($("#username").val(), function(tt) {
                 var topTracks = shuffle(tt);
+                fetchFeatures(topTracks);
                 socket.on('start', function (category) {
-                    selectTracks(topTracks, category, startRound);
+                    if (tracksWithData.length<3) return;
+                    console.log(category);
+                    selectTracks(tracksWithData, category);
                 });
             });
         });
         return false;
     });
     
-    
+    $("#login").show();
+    $("#mainscreen").hide();
 
 });

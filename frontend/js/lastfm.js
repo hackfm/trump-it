@@ -2,6 +2,40 @@ var lastfm=function() {
     var api_key="202ece1f999e55ce1c3aaabbbad6ae40";
     var api_root="http://ws.audioscrobbler.com/2.0/?";
     
+    function getAudioFeatures(artist, title, callback) {
+        $.getJSON(api_root,
+            {
+                method:"track.getAudioFeatures",
+                api_key:api_key,
+                format:"json",
+                "artist":artist,
+                "track":title
+            }, function(response) {
+                if (response.audiofeatures=="\n    ") {
+                    callback(null);
+                } else {
+                    callback(response.audiofeatures);
+                }
+            });
+    }
+    
+    function getListeningData(artist,title,callback) {
+        $.getJSON(api_root,
+            {
+                method:"track.getInfo",
+                api_key:api_key,
+                format:"json",
+                "artist":artist,
+                "track":title
+            }, function(response) {
+                var listeningData = {
+                    listeners: response.track.listeners,
+                    scrobbles: response.track.playcount
+                };
+                callback(listeningData);
+            });
+    }
+    
     function getUserImage(userName, callback) {
         $.getJSON(api_root,
             {
@@ -13,6 +47,8 @@ var lastfm=function() {
                 callback(response.user.image[1]["#text"]);
             });
     }
+    
+    
     
     function getTopTracks(userName, callback) {
         $.getJSON(api_root,
@@ -47,6 +83,8 @@ var lastfm=function() {
     
     return {
         "getTopTracks":getTopTracks,
-        "getUserImage":getUserImage
+        "getUserImage":getUserImage,
+        "getAudioFeatures":getAudioFeatures,
+        "getListeningData":getListeningData
     };
 }();
