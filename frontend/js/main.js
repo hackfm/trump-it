@@ -10,10 +10,6 @@ $(function() {
         });
     
 
-    socket.on('results', function (track, user) {
-        console.log('result', track, user);
-    });
-    
     function getAudioFeatures(track, category) {
     }
     
@@ -25,6 +21,7 @@ $(function() {
     function startRound(selectedTracks) {
         $("#login").hide();
         $("#mainscreen").show();
+        //$('.result_screen').hide();
         $("#tracks").empty();
         $.each(selectedTracks, function(i, trk) {
             $("#tracks").append(templates.trackElement(trk.artist,trk.track,trk.image, 4.4823));
@@ -46,6 +43,24 @@ $(function() {
         });
     }
     
+    function showResults(winner, track, users) {
+        $('#mainscreen').hide();
+        if (winner != null) {
+            $('#winner').show();
+            $('#winning_user img').attr('src', winner.image);
+            $('#winning_user .username').text(winner.name);
+            $('#winning_track img').attr('src', track.image);
+            $('#winning_track .artist').text(track.artist);
+            $('#winning_track .title').text(track.title);
+        }
+        else
+        {
+            $('#no_winner').show();
+        }
+        
+
+    }
+
     $("#login").show();
     $("#mainscreen").hide();
     
@@ -56,7 +71,13 @@ $(function() {
             lastfm.getTopTracks($("#username").val(), function(tt) {
                 var topTracks = shuffle(tt);
                 socket.on('start', function (category) {
+                    console.log('start');
                     selectTracks(topTracks, category, startRound);
+                });
+
+                socket.on('results', function (winner, track, users) {
+                    console.log('result', winner, track, users);
+                    showResults(winner, track, users);
                 });
             });
         });
