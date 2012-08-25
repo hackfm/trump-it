@@ -61,6 +61,9 @@ class Game extends EventEmitter
         @emit 'start', @feature, @parity
         console.log 'start. Feature picked is:', @feature, 'parity:', @parity
 
+        # Check for stale users
+        setInterval @cleanupUsers, 30000;
+
         # Wait for the game to end
         setTimeout =>
        
@@ -92,8 +95,6 @@ class Game extends EventEmitter
                         if (@users[i].value != null)
                             winners.push @users[i]
 
-            console.log winners
-
             # Sort users back to score
             @sortUsers();
 
@@ -111,6 +112,20 @@ class Game extends EventEmitter
 
                 
         ,15000
+
+    cleanupUsers: =>
+        timeout = 2 * 60 * 1000;
+        acceptableTimestamp = new Date().getTime() - timeout;
+        newList = [];
+        for user in @users
+            do (user) =>
+                if (user.lastSeen > acceptableTimestamp) 
+                    newList.push user
+                else
+                    @emit 'removeUser', user.name
+
+        @users = newList;
+        @emit 'users'
 
     sortUsers: =>
         @users.sort (a, b) ->
@@ -140,6 +155,7 @@ class Game extends EventEmitter
             score: 0
             value: null
             track: null
+            lastSeen: new Date().getTime()
         }
         @users.push userObj
         return userObj
@@ -179,6 +195,9 @@ io.sockets.on 'connection', (socket) ->
 
         userObj = game.userJoin(user.name, user.image);
 
+        isAlive = () ->
+            userObj.lastSeen = new Date().getTime()
+
         onStart = (feature, parity) ->
             socket.emit 'start', feature, parity
 
@@ -187,6 +206,9 @@ io.sockets.on 'connection', (socket) ->
 
         onUsers = () ->
             socket.emit 'users', game.users
+
+        onRemoveUser = (username) ->
+            socket.emit 'removeUser', username
 
         onPreview = (url) ->
             socket.emit 'preview', url
@@ -205,6 +227,7 @@ io.sockets.on 'connection', (socket) ->
         game.on 'users', onUsers
         game.on 'userJoin', onUserJoin
         game.on 'preview', onPreview
+        game.on 'removeUser', onRemoveUser
 
         # Show them what we got...
         onUsers();
@@ -214,6 +237,7 @@ io.sockets.on 'connection', (socket) ->
             console.log('user picked a track', track.title, value)
             userObj.track = track
             userObj.value = value
+            isAlive();
 
         onDisconnect = () ->
             console.log('user left', user.name)
@@ -222,7 +246,7 @@ io.sockets.on 'connection', (socket) ->
             game.removeListener 'users', onUsers
             game.removeListener 'userJoin', onUserJoin
             game.removeListener 'preview', onPreview
-            game.userRemoveConnection(user);
+            #game.userRemoveConnection(user);
 
         # Clean up on disconnect
         socket.on 'disconnect', onDisconnect

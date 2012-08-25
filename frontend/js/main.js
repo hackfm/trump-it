@@ -161,6 +161,13 @@ $(function() {
                 updateLeaderboard(users);
             });
 
+            socket.on('removeUser', function (usernameRemoved) {
+                console.log('removeUser:', usernameRemoved)
+                if (username == usernameRemoved) {
+                    window.location.reload()
+                }
+            });
+
             socket.on('preview', function (url) {
                 //Audio
                 console.log('preview', url);
