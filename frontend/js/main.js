@@ -74,14 +74,26 @@ $(function() {
 
                 var len = winners.length;
                 for (var i=0; i<len; i++) {
-                    var element = templates.trackElement(
-                        winners[i].track.title, 
-                        winners[i].track.artist,
-                        winners[i].track.image, 
-                        winners[i].track.value, 
-                        winners[i].track.feature,
-                        winners[i].name
-                    );
+                    if (i > 0) {
+                        var element = templates.trackElement(
+                            winners[i].track.title, 
+                            winners[i].track.artist,
+                            winners[i].track.image, 
+                            winners[i].track.value, 
+                            winners[i].track.feature,
+                            winners[i].name
+                        );
+                    }
+                    else
+                    {
+                        var element = templates.trackElement(
+                            winners[i].track.title, 
+                            winners[i].track.artist,
+                            winners[i].track.image, 
+                            winners[i].track.value, 
+                            winners[i].track.feature
+                        );
+                    }
 
                     element.addClass('winner'+(i+1));
 
