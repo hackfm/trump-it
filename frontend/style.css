@@ -131,6 +131,7 @@ footer .userForLeaderboard {
   height: 64px;
   float: left;
   margin-right: 10px;
+  display: block;
 }
 footer .userForLeaderboard img {
   position: absolute;

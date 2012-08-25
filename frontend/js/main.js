@@ -145,12 +145,18 @@ $(function() {
 
                     socket.on('preview', function (url) {
                         //Audio
-                        console.log('preview', url)
-                        var audioElement = $('#preview_audio').attr('src', url).get(0);
-                        audioElement.play();
-                        setTimeout(function() {
-                            $('#preview_audio').attr('src', '')
-                        }, 25000);
+                        console.log('preview', url);
+                        $('#preview_audio').attr('src', url).get(0);
+                    });
+
+                    socket.on('previewPlay', function () {
+                        console.log('previewPlay');
+                        $('#preview_audio').get(0).play();
+                    });
+
+                    socket.on('previewStop', function () {
+                        console.log('previewStop');
+                        $('#preview_audio').attr('src', '')
                     });
 
                     socket.on('disconnect', function() {
