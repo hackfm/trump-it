@@ -1,4 +1,5 @@
 io = require('socket.io').listen 8080
+http = require 'http'
 
 EventEmitter = require('events').EventEmitter
 
@@ -25,6 +26,27 @@ class Game extends EventEmitter
         setInterval @gameStart, 30000;
         @gameStart();
 
+    # Using 7digital
+    getPreviewURL: (artist, track, callback) =>
+        options = 
+            host: 'api.7digital.com',
+            path: '/1.2/track/search?q='+encodeURIComponent(artist)+'%20'+encodeURIComponent(track)+'&oauth_consumer_key=musichackday',
+            method: 'GET'
+        
+        buffer = '';
+        http.get options, (r) ->
+            r.setEncoding 'utf8'
+            r.on 'data', (chunk) ->
+                buffer += chunk
+            r.on 'end', () ->
+                res = buffer.match /\<track id="([\d]+)"\>/
+                if (res.length>1)
+                    callback 'http://previews.7digital.com/clips/34/'+res[1]+'.clip.mp3'
+
+        .on 'error', (e) ->
+            console.log("Got error HTTP: " + e.message);
+
+
     # Happens every 30 seconds
     gameStart: =>
 
@@ -41,14 +63,19 @@ class Game extends EventEmitter
 
         # Wait for the game to end
         setTimeout =>
+
             
+       
             # find winners. This messes up the ordering, so make sure you sort it by score afterwards
             @users.sort (a, b) ->
                 if (b.value == null)
                     return -1
                 if (a.value == null)
                     return 1
-                return b.value - a.value
+                if (@parity == '+')
+                    return b.value - a.value
+                else
+                    return a.value - b.value
 
             # Add Score to users
             scores = [5, 2, 1]
@@ -75,6 +102,10 @@ class Game extends EventEmitter
             else
                 console.log 'results: ', winner.name, winner.track.track
                 @emit 'results', winner, winner.track, @users
+
+                # get preview url 
+                @getPreviewURL winner.track.artist, winner.track.title, (r) =>
+                    @emit 'preview', r
         ,15000
 
     sortUsers: =>
@@ -153,6 +184,9 @@ io.sockets.on 'connection', (socket) ->
         onUsers = () ->
             socket.emit 'users', game.users
 
+        onPreview = (url) ->
+            socket.emit 'preview', url
+
         # Only allow one connection per user
         onUserJoin = (name) ->
             if (name == user.name)
@@ -163,6 +197,7 @@ io.sockets.on 'connection', (socket) ->
         game.on 'results', onResult
         game.on 'users', onUsers
         game.on 'userJoin', onUserJoin
+        game.on 'preview', onPreview
 
         # Show them what we got...
         onUsers();
@@ -178,6 +213,8 @@ io.sockets.on 'connection', (socket) ->
             game.removeListener 'start', onStart
             game.removeListener 'results', onResult
             game.removeListener 'users', onUsers
+            game.removeListener 'userJoin', onUserJoin
+            game.removeListener 'preview', onPreview
             game.userRemoveConnection(user);
 
         # Clean up on disconnect

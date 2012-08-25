@@ -5,7 +5,15 @@ function shuffle(v){
 
 var SOCKET_IO_ADDR = 'http://ec2-46-137-143-82.eu-west-1.compute.amazonaws.com:8080';
 var socket;
-
+/*
+soundManager.setup({
+    url: 'soundmanager/swf/',
+    useFlashBlock: false, 
+    onready: function() {
+        console.log('soundmanager ready');
+    }
+});
+*/
 
 $(function() {
     
@@ -144,8 +152,24 @@ $(function() {
                         updateLeaderboard(users);
                     });
 
+                    socket.on('preview', function (url) {
+                        //Audio
+                        console.log('preview', url)
+                        /*var sound = soundManager.createSound({
+                            id: 'preview',
+                            url: url,
+                            autoLoad: true
+                        });
+                        sound.play();
+                        console.log(sound);*/
+                        $('#preview_audio').attr('src', url);
+                        setTimeout(function() {
+                            $('#preview_audio').stop();
+                        }, 25000);
+                    });
+
                     socket.on('disconnect', function() {
-                        window.location.reload();
+                        // window.location.reload();
                     });
                 });
                 
