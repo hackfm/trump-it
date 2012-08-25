@@ -1,7 +1,7 @@
 var features = function() {
     var featureDescriptions = {
-        'listeners': "track with the <strong>Most Listeners</strong>",
-        'scrobbles': "track with the <strong>Most Scrobbles</strong>",
+        'listeners': "Track with the <strong>Most Listeners</strong>",
+        'scrobbles': "Track with the <strong>Most Scrobbles</strong>",
         'bpm': "<strong>Fastest</strong> track",
         'avg_loudness': "<strong>Loudest</strong> track",
         'energy': "Most <strong>Energetic</strong> track", 

@@ -18,7 +18,7 @@ var templates=function() {
     }
     
     return {
-        trackElement:trackElement,
-        userForLeaderboardElement:userForLeaderboardElement
+        "trackElement":trackElement,
+        "userForLeaderboardElement":userForLeaderboardElement
     };  
 }();
