@@ -24,7 +24,7 @@ $(function() {
         
         $("#tracks").empty();
         $.each(selectedTracks, function(i, trk) {
-            $("#tracks").append(templates.trackElement(trk.artist,trk.track,trk.image,trk.features[category.feature]));
+            $("#tracks").append(templates.trackElement(trk.artist,trk.track,trk.image,trk.features[category.feature],category.feature));
         });
         $("#tracks").find(".track").click(function() {
             var title = $(this).find(".title").text();
@@ -32,11 +32,14 @@ $(function() {
             var value = $(this).data("score");
             var image = $(this).find("img").attr("src");
             $("#tracks").find(".track").not(this).fadeOut("slow");
+            $(this).find(".display_score").fadeIn("fast");
             socket.emit("pick", 
                 {
                   "artist":artist,
                   "title":title,
-                  "image":image
+                  "image":image,
+                  "value":value,
+                  "feature":category.feature
                 },
                 value);
             console.log("track_click", artist,title,value);
@@ -67,8 +70,7 @@ $(function() {
                 $('#winner').show();
                 $('#winning_user img').attr('src', winner.image);
                 $('#winning_user .username').text(winner.name);
-                $('#winner .track_container').empty().append(templates.trackElement(track.title,track.artist,track.image,0));
-                playSong(track.artist,track.title);
+                $('#winner .track_container').empty().append(templates.trackElement(track.title,track.artist,track.image,track.value,track.feature));
             }
             else
             {

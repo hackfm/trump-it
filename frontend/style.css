@@ -63,6 +63,9 @@ article .choose {
 .track .title {
   font-weight: bold;
 }
+.track .display_score {
+  text-align: right;
+}
 .track .track_image {
   width: 64px;
   height: 64px;
