@@ -2,6 +2,15 @@ var lastfm=function() {
     var api_key="202ece1f999e55ce1c3aaabbbad6ae40";
     var api_root="http://ws.audioscrobbler.com/2.0/?";
     
+    function getPreviewMp3(artist, title) {
+        return api_root+$.param({
+            method: "track.getPreviewmp3",
+            api_key:api_key,
+            artist:artist,
+            track:title
+        });
+    }
+    
     function getAudioFeatures(artist, title, callback) {
         $.getJSON(api_root,
             {
