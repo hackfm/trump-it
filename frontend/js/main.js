@@ -172,11 +172,6 @@ $(function() {
                 $('#preview_audio').get(0).play();
             });
 
-            socket.on('previewStop', function () {
-                console.log('previewStop');
-                $('#preview_audio').attr('src', '')
-            });
-
             socket.on('disconnect', function() {
                 // window.location.reload();
             });

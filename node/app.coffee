@@ -193,9 +193,6 @@ io.sockets.on 'connection', (socket) ->
             setTimeout () ->
                 socket.emit 'previewPlay'
             ,3000
-            setTimeout () ->
-                socket.emit 'previewStop'
-            ,30000
 
         # Only allow one connection per user
         onUserJoin = (name) ->
