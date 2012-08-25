@@ -192,7 +192,7 @@ io.sockets.on 'connection', (socket) ->
             socket.emit 'preview', url
             setTimeout () ->
                 socket.emit 'previewPlay'
-            ,3000
+            ,2000
 
         # Only allow one connection per user
         onUserJoin = (name) ->
