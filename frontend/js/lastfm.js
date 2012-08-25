@@ -89,12 +89,40 @@ var lastfm=function() {
             });
     }
     
+       function getGlobalTracks(callback) {
+        $.getJSON(api_root,
+            {
+                method:"chart.getTopTracks",
+                api_key:api_key,
+                limit:200,
+                format:"json"
+            }, function(rawData) {
+                var results=[];
+                var trackArray = rawData.tracks.track;
+                $.each(trackArray, function(i, rawTrack) {
+                    var artist = rawTrack.artist.name;
+                    var track = rawTrack.name;
+                    var image = "";
+                    if (rawTrack.hasOwnProperty("image")) {
+                        image=rawTrack.image[1]["#text"];
+                    }
+                    results.push(
+                        {
+                            "artist":artist,
+                            "track":track,
+                            "image":image
+                        });
+                });
+                callback(results);
+            });
+    }
     
     return {
         "getTopTracks":getTopTracks,
         "getUserImage":getUserImage,
         "getAudioFeatures":getAudioFeatures,
         "getListeningData":getListeningData,
-        "getPreviewMp3":getPreviewMp3
+        "getPreviewMp3":getPreviewMp3,
+        "getGlobalTracks":getGlobalTracks
     };
 }();

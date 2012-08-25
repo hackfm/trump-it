@@ -1,6 +1,6 @@
 <html>
     <head>
-        <title>trkatk</title>
+        <title>trkatk - Battle with your favourite tracks</title>
         <!-- Fonts -->
     	<link href="http://fonts.googleapis.com/css?family=Open+Sans:400,700" rel="stylesheet" type="text/css">
  
@@ -28,14 +28,16 @@
         <h1 class="app_title"><span>trkatk.com</span></h1>
         <article id="login">
            <h1>Login</h1>
-           <div id="login_form">
                <p>Log in with your Last.fm username</p>
-               <div class="fs_dataentry">
-                 <input type="text" id="username" name="username" value="" /><br />
-                 <input type="submit" id="login_button" value="Start" />
+               <div id="login_form_container">
+                   <div class="fs_dataentry">
+                    <form id="login_form">
+                     <input type="text" id="username" name="username" value="" /><br />
+                     <input type="submit" class="login" id="login_button" value="Start" />
+                    </form>
+                    <input type="submit" class="login" id="anon_button" value="I don't have Last.fm" />
+                   </div>
                </div>
-           </div>
-
            <div id="login_spinner" style="display:none;">
                 <img src="spinner.gif" alt="Please wait">
                 <span id="spinner_text">Please wait, we're loading your top tracks...</span>
