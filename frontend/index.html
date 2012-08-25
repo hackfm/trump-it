@@ -29,12 +29,14 @@
         <article id="login">
            <h1>Login</h1>
                <p>Log in with your Last.fm username</p>
-               <div class="fs_dataentry">
-                <form id="login_form">
-                 <input type="text" id="username" name="username" value="" /><br />
-                 <input type="submit" class="login" id="login_button" value="Start" />
-                </form>
-                <input type="submit" class="login" id="anon_button" value="I don't have Last.fm" />
+               <div id="login_form_container">
+                   <div class="fs_dataentry">
+                    <form id="login_form">
+                     <input type="text" id="username" name="username" value="" /><br />
+                     <input type="submit" class="login" id="login_button" value="Start" />
+                    </form>
+                    <input type="submit" class="login" id="anon_button" value="I don't have Last.fm" />
+                   </div>
                </div>
            <div id="login_spinner" style="display:none;">
                 <img src="spinner.gif" alt="Please wait">

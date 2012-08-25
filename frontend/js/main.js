@@ -155,7 +155,7 @@ $(function() {
     
     function logInLastfm() {
         // Start spinner
-        $('#login_form').hide();
+        $('#login_form_container').hide();
         $('#login_spinner').show();
 
         var username=$("#username").val();
@@ -170,7 +170,7 @@ $(function() {
     }
     
     function logInAnon() {  // Start spinner
-        $('#login_form').hide();
+        $('#login_form_container').hide();
         $('#login_spinner').show();
         
         var username="Guest_"+ Math.floor(Math.random()*2000);
