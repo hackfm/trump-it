@@ -3,11 +3,12 @@ function shuffle(v){
     return v;
 }
 
+var SOCKET_IO_ADDR = 'http://ec2-46-137-143-82.eu-west-1.compute.amazonaws.com:8080';
+var socket;
+
+
 $(function() {
-    var socket = io.connect('http://ec2-46-137-143-82.eu-west-1.compute.amazonaws.com:8080',
-        function() {
-            console.log('connected');
-        });
+    
     
 
     function getAudioFeatures(track, category) {
@@ -21,7 +22,7 @@ $(function() {
     function startRound(selectedTracks) {
         $("#login").hide();
         $("#mainscreen").show();
-        //$('.result_screen').hide();
+        $('.result_screen').hide();
         $("#tracks").empty();
         $.each(selectedTracks, function(i, trk) {
             $("#tracks").append(templates.trackElement(trk.artist,trk.track,trk.image, 4.4823));
@@ -44,18 +45,20 @@ $(function() {
     }
     
     function showResults(winner, track, users) {
-        $('#mainscreen').hide();
-        if (winner != null) {
-            $('#winner').show();
-            $('#winning_user img').attr('src', winner.image);
-            $('#winning_user .username').text(winner.name);
-            $('#winning_track img').attr('src', track.image);
-            $('#winning_track .artist').text(track.artist);
-            $('#winning_track .title').text(track.title);
-        }
-        else
-        {
-            $('#no_winner').show();
+        if ($('#mainscreen').is(':visible')) {
+            $('#mainscreen').hide();
+            if (winner != null) {
+                $('#winner').show();
+                $('#winning_user img').attr('src', winner.image);
+                $('#winning_user .username').text(winner.name);
+                $('#winning_track img').attr('src', track.image);
+                $('#winning_track .artist').text(track.artist);
+                $('#winning_track .title').text(track.title);
+            }
+            else
+            {
+                $('#no_winner').show();
+            }
         }
         
 
@@ -65,20 +68,35 @@ $(function() {
     $("#mainscreen").hide();
     
     $("#login_button").click(function() {
-        var username=$("#username").val();
-        lastfm.getUserImage(username, function(image) {
-            socket.emit('join', {"name": username, "image": image});
-            lastfm.getTopTracks($("#username").val(), function(tt) {
-                var topTracks = shuffle(tt);
-                socket.on('start', function (category) {
-                    console.log('start');
-                    selectTracks(topTracks, category, startRound);
-                });
+        // Start spinner
+        $('#login_form').hide();
+        $('#login_spinner').show();
 
-                socket.on('results', function (winner, track, users) {
-                    console.log('result', winner, track, users);
-                    showResults(winner, track, users);
+        var username=$("#username").val();
+
+        // TODO: Add "wrong-username"-callback
+        lastfm.getUserImage(username, function(image) {
+            lastfm.getTopTracks(username, function(tt) {
+
+                // We only need to connect after all that data-stuff is sorted 
+                socket = io.connect(SOCKET_IO_ADDR);
+                socket.on('connect', function() {
+                    socket.emit('join', {"name": username, "image": image});
+
+                    $('#spinner_text').text('Please wait for the next round to start...');
+
+                    var topTracks = shuffle(tt);
+                    socket.on('start', function (category) {
+                        console.log('start');
+                        selectTracks(topTracks, category, startRound);
+                    });
+
+                    socket.on('results', function (winner, track, users) {
+                        console.log('result', winner, track, users);
+                        showResults(winner, track, users);
+                    });
                 });
+                
             });
         });
         return false;
