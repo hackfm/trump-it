@@ -67,6 +67,7 @@ $(function() {
                 $('#winning_user img').attr('src', winner.image);
                 $('#winning_user .username').text(winner.name);
                 $('#winner .track_container').empty().append(templates.trackElement(track.title,track.artist,track.image,track.value,track.feature));
+                $('#winner .track_container .display_score').show();
             }
             else
             {
