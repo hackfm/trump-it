@@ -201,7 +201,7 @@ $(function() {
     
     
     $("#login_form").submit(function() {
-        logIn();
+        logInLastfm();
         return false;
     });
     
