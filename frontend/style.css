@@ -84,8 +84,10 @@ article .choose {
 }
 .winner2,
 .winner3 {
-  background-color: #000000;
-  border: none;
+  /*background-color: @background;
+    border: none;*/
+
+  opacity: 0.5;
 }
 .track:hover {
   background-color: #b2503d;

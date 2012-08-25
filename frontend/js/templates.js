@@ -17,7 +17,7 @@ var templates=function() {
         var element = $("#templates .userForLeaderboard").clone();
         element.find(".score").text(score);
         element.find("img").attr("src",image);
-        if (name.indexOf(str) == 'guest_') {
+        if (name.indexOf('guest_') == 0) {
             element.attr('href', '');
         }
         else
