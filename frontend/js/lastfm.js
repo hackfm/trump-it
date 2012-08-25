@@ -44,7 +44,7 @@ var lastfm=function() {
                 user:userName,
                 format:"json"
             }, function(response) {
-                callback(response.user.image[1]["#text"]);
+                callback(response.user.image[1]["#text"].replace('/64/', '/64s/'));
             });
     }
     

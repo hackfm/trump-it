@@ -74,7 +74,7 @@ $(function() {
     }
 
     function updateLeaderboard(users) {
-        var $footer = $('footer');
+        var $footer = $('footer').empty();
         var len = users.length;
         for (var i=0; i<len; i++) {
             var user = users[i];
