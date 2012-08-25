@@ -66,10 +66,28 @@ $(function() {
         if ($('#mainscreen').is(':visible')) {
             $('#mainscreen').hide();
             if (winners.length > 0) {
+                var winner = winners[0];
                 $('#winner').show();
                 $('#winning_user img').attr('src', winner.image);
                 $('#winning_user .username').text(winner.name);
-                $('#winner .track_container').empty().append(templates.trackElement(track.title,track.artist,track.image,track.value,track.feature));
+                var $tracklist = $('#winner .track_container').empty();
+
+                var len = winners.length;
+                for (var i=0; i<len; i++) {
+                    var element = templates.trackElement(
+                        winners[i].track.title, 
+                        winners[i].track.artist,
+                        winners[i].track.image, 
+                        winners[i].track.value, 
+                        winners[i].track.feature,
+                        winners[i].name
+                    );
+
+                    element.addClass('winner'+(i+1));
+
+                    $tracklist.append(element);
+                }
+                    
                 $('#winner .track_container .display_score').show();
                 countdown($('.countdown_winner'), 15);
             }

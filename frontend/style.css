@@ -82,6 +82,11 @@ article .choose {
   margin-right: 10px;
   border-radius: 10px;
 }
+.winner2,
+.winner3 {
+  background-color: #000000;
+  border: none;
+}
 .track:hover {
   background-color: #b2503d;
 }
