@@ -9,7 +9,6 @@ var socket;
 
 $(function() {
     
-    
     function selectTracks(tracklist, category, callback) {
         selectedTracks=[tracklist.pop(),tracklist.pop(),tracklist.pop()];
         startRound(selectedTracks,category);
@@ -19,11 +18,11 @@ $(function() {
         $("article").hide();
         $("#mainscreen").show();
         
-        $("#round_description").html(features.getDescription(category));
+        $("#round_description").html(features.getDescription(category.feature,category.parity=="-"));
         
         $("#tracks").empty();
         $.each(selectedTracks, function(i, trk) {
-            $("#tracks").append(templates.trackElement(trk.artist,trk.track,trk.image,trk.features[category]));
+            $("#tracks").append(templates.trackElement(trk.artist,trk.track,trk.image,trk.features[category.feature]));
         });
         $("#tracks").find(".track").click(function() {
             var title = $(this).find(".title").text();
@@ -65,6 +64,7 @@ $(function() {
                 $('#winning_user img').attr('src', winner.image);
                 $('#winning_user .username').text(winner.name);
                 $('#winner .track_container').empty().append(templates.trackElement(track.title,track.artist,track.image,0));
+                playSong(track.artist,track.title);
             }
             else
             {
