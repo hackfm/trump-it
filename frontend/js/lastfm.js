@@ -66,7 +66,7 @@ var lastfm=function() {
                 api_key:api_key,
                 user:userName,
                 period:"6month",
-                limit:100,
+                limit:200,
                 format:"json"
             }, function(rawData) {
                 var results=[];
