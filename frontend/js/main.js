@@ -8,7 +8,6 @@ $(function() {
         function() {
             console.log('connected');
         });
-
     
 
     socket.on('results', function (track, user) {
@@ -19,13 +18,14 @@ $(function() {
     }
     
     function selectTracks(topTracks, category, callback) {
-        selectedTracks=[topTracks[0],topTracks[1],topTracks[2]];
+        selectedTracks=[topTracks.pop(),topTracks.pop(),topTracks.pop()];
         callback(selectedTracks);
     }
     
     function startRound(selectedTracks) {
         $("#login").hide();
         $("#mainscreen").show();
+        $("#tracks").empty();
         $.each(selectedTracks, function(i, trk) {
             $("#tracks").append(templates.trackElement(trk.artist,trk.track,trk.image, 4.4823));
         });
@@ -34,7 +34,7 @@ $(function() {
             var artist = $(this).find(".artist").text();
             var value = $(this).data("score");
             var image = $(this).find("img").attr("src");
-            
+            $("#tracks").find(".track").not(this).fadeOut("slow");
             socket.emit("pick", 
                 {
                   "artist":artist,
