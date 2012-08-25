@@ -8,6 +8,17 @@ var templates=function() {
         element.data("score",value);
         return element;
     }
+
+    function userForLeaderboardElement(name,image,score) {
+        var element = $("#templates .userForLeaderboard").clone();
+        element.find(".score").text(score);
+        element.find("img").attr("src",image);
+        element.find("img").attr("alt",name);
+        return element;
+    }
     
-    return {trackElement:trackElement};  
+    return {
+        trackElement:trackElement,
+        userForLeaderboardElement:userForLeaderboardElement
+    };  
 }();

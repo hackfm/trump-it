@@ -6,7 +6,7 @@ features = [
     'listeners',
     'scrobbles',
     'bpm',
-    'loudness',
+    'avg_loudness',
     'energy',
     'percussiveness',
     'danceability'
@@ -51,9 +51,7 @@ class Game extends EventEmitter
             scores = [5, 2, 1]
             i = 0;
             for score, i in scores 
-                console.log 'debug1', i, score
                 if (@users.length > i && @users[i].value != null)
-                    console.log 'debug', i, score
                     @users[i].score += score
 
 
@@ -79,6 +77,7 @@ class Game extends EventEmitter
     sortUsers: =>
         @users.sort (a, b) ->
             return b.score - a.score
+        @emit 'users'
 
     pickRandomFeature: =>
         i = Math.floor(Math.random() * features.length);
@@ -94,6 +93,7 @@ class Game extends EventEmitter
         }
         @users.push userObj
         return userObj
+        @emit 'users'
 
     cleanUpValueOnUsers: () =>
         for user in @users
@@ -111,6 +111,7 @@ class Game extends EventEmitter
                     newList.push user
 
         @users = newList;
+        @emit 'users'
 
 
 # Start the game
@@ -130,8 +131,15 @@ io.sockets.on 'connection', (socket) ->
         onResult = (winner, track, users) ->
             socket.emit 'results', winner, track, users
 
+        onUsers = () ->
+            socket.emit 'users', game.users
+
         game.on 'start', onStart
         game.on 'results', onResult
+        game.on 'users', onUsers
+
+        # Show them what we got...
+        onUsers();
 
         # User has made his choice
         socket.on 'pick', (track, value) ->
@@ -144,6 +152,7 @@ io.sockets.on 'connection', (socket) ->
             console.log('user left', user.name)
             game.removeListener 'start', onStart
             game.removeListener 'results', onResult
+            game.removeListener 'users', onUsers
             game.userLeave(user);
 
 

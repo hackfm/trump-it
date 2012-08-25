@@ -73,8 +73,15 @@ $(function() {
                 $('#no_winner').show();
             }
         }
-        
+    }
 
+    function updateLeaderboard(users) {
+        var $footer = $('footer');
+        var len = users.length;
+        for (var i=0; i<len; i++) {
+            var user = users[i];
+            $footer.append(templates.userForLeaderboardElement(user.name, user.image, user.score));
+        }    
     }
     
     $("#login_button").click(function() {
@@ -107,6 +114,11 @@ $(function() {
                     socket.on('results', function (winner, track, users) {
                         console.log('result', winner, track, users);
                         showResults(winner, track, users);
+                    });
+
+                    socket.on('users', function (users) {
+                        console.log('users, count:', users.lenght)
+                        updateLeaderboard(users);
                     });
                 });
                 
