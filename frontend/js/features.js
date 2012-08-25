@@ -3,7 +3,7 @@ var features = function() {
         'listeners': "track with the <strong>Most Listeners</strong>",
         'scrobbles': "track with the <strong>Most Scrobbles</strong>",
         'bpm': "<strong>Fastest</strong> track",
-        'loudness': "<strong>Loudest</strong> track",
+        'avg_loudness': "<strong>Loudest</strong> track",
         'energy': "Most <strong>Energetic</strong> track", 
         'percussiveness': "Most <strong>Percussive</strong> track",
         'danceability': "Most <strong>Danceable</strong> track"
