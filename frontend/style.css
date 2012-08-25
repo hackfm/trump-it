@@ -1,6 +1,6 @@
 body {
   font-family: "Open Sans", sans-serif;
-  background-color: #233138;
+  background-color: #000000;
   color: #fff7f5;
   width: 100%;
 }
@@ -11,8 +11,6 @@ article {
   min-height: 400px;
   margin-left: auto;
   margin-right: auto;
-  border: 1px solid #4c646b;
-  border-radius: 10px;
 }
 article p {
   padding: 10px;
