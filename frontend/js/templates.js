@@ -17,8 +17,15 @@ var templates=function() {
         var element = $("#templates .userForLeaderboard").clone();
         element.find(".score").text(score);
         element.find("img").attr("src",image);
+        if (name.indexOf(str) == 'guest_') {
+            element.attr('href', '');
+        }
+        else
+        {
+            element.attr('href', 'http://www.last.fm/user/'+encodeURIComponent(name));
+        }
         element.find("img").attr("alt",name);
-        element.attr('href', 'http://www.last.fm/user/'+encodeURIComponent(name));
+        
         element.attr('title', name);
         return element;
     }
