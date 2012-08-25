@@ -56,7 +56,7 @@ var lastfm=function() {
                 method:"user.getTopTracks",
                 api_key:api_key,
                 user:userName,
-                period:"3month",
+                period:"6month",
                 limit:100,
                 format:"json"
             }, function(rawData) {
