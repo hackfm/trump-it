@@ -94,6 +94,7 @@ class Game extends EventEmitter
         # no double joining, please
         for user in @users
             if (user.name == name) 
+                user.connections++
                 return user
 
         # add user
@@ -103,6 +104,7 @@ class Game extends EventEmitter
             score: 0
             value: null
             track: null
+            connections: 1
         }
         @users.push userObj
         return userObj
@@ -115,16 +117,19 @@ class Game extends EventEmitter
                 user.track = null;
 
     # It's a bit stupid, but deleting elements from an array in JS is baaaah.
-    userLeave: (user) =>
-        name = user.name
-        newList = [];
-        for user in @users
-            do (user) ->
-                if (user.name != name) 
-                    newList.push user
+    userRemoveConnection: (user) =>
+        user.connections--
 
-        @users = newList;
-        @emit 'users'
+        if (user.connections == 0)
+            name = user.name
+            newList = [];
+            for user in @users
+                do (user) ->
+                    if (user.name != name) 
+                        newList.push user
+
+            @users = newList;
+            @emit 'users'
 
 
 # Start the game
@@ -166,7 +171,7 @@ io.sockets.on 'connection', (socket) ->
             game.removeListener 'start', onStart
             game.removeListener 'results', onResult
             game.removeListener 'users', onUsers
-            game.userLeave(user);
+            game.userRemoveConnection(user);
 
 
 # Less debug

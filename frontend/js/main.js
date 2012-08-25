@@ -17,6 +17,8 @@ $(function() {
     function startRound(selectedTracks,category) {
         $("article").hide();
         $("#mainscreen").show();
+
+        countdown($('.countdown_start'), 15);
         
         $("#round_description").html(features.getDescription(category.feature,category.parity=="-"));
         
@@ -39,6 +41,8 @@ $(function() {
                 value);
             console.log("track_click", artist,title,value);
         });
+
+
     }
     
 
@@ -70,7 +74,22 @@ $(function() {
             {
                 $('#no_winner').show();
             }
+
+            countdown($('.countdown_result'), 15);
         }
+    }
+
+    function countdown($element, time) {
+        var timeLeft = time;
+        var frameCountdown = function() {
+            $element.text(timeLeft);
+            if (timeLeft > 0) {
+                timeLeft--;
+                setTimeout(frameCountdown, 1);
+            }
+        }
+        frameCountdown();
+
     }
 
     function updateLeaderboard(users) {
