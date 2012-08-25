@@ -62,10 +62,10 @@ $(function() {
         });
     }
 
-    function showResults(winner, track, users) {
+    function showResults(winners, users) {
         if ($('#mainscreen').is(':visible')) {
             $('#mainscreen').hide();
-            if (winner != null) {
+            if (winners.length > 0) {
                 $('#winner').show();
                 $('#winning_user img').attr('src', winner.image);
                 $('#winning_user .username').text(winner.name);
@@ -133,9 +133,9 @@ $(function() {
                         selectTracks(tracksWithData, category);
                     });
 
-                    socket.on('results', function (winner, track, users) {
-                        console.log('result', winner, track, users);
-                        showResults(winner, track, users);
+                    socket.on('results', function (winners, users) {
+                        console.log('result', winners, users);
+                        showResults(winners, users);
                     });
 
                     socket.on('users', function (users) {

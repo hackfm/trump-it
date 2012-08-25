@@ -125,19 +125,20 @@ footer {
   margin-right: auto;
   margin-top: 10px;
 }
-footer .userForLeaderboard {
+footer a.userForLeaderboard {
   position: relative;
   width: 64px;
   height: 64px;
   float: left;
   margin-right: 10px;
   display: block;
+  text-decoration: none;
 }
-footer .userForLeaderboard img {
+footer a.userForLeaderboard img {
   position: absolute;
   border-radius: 10px;
 }
-footer .userForLeaderboard .score {
+footer a.userForLeaderboard .score {
   position: absolute;
   width: 64px;
   height: 64px;
