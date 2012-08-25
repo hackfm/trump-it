@@ -10,6 +10,7 @@ article {
   max-width: 600px;
   margin-left: auto;
   margin-right: auto;
+  position: relative;
 }
 article p {
   padding: 10px;
@@ -137,4 +138,13 @@ footer .userForLeaderboard .score {
   text-shadow: 0em 0em 0.1em #fff7f5;
   display: block;
   color: #000000;
+}
+.remaining_time {
+  position: absolute;
+  top: 0px;
+  right: 5px;
+  left: auto;
+  display: block;
+  font-size: 2em;
+  color: #4c646b;
 }

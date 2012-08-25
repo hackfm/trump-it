@@ -137,6 +137,9 @@ game = new Game();
 io.sockets.on 'connection', (socket) ->
 
     socket.on 'join', (user) ->
+        
+        user.name = user.name.toLowerCase()
+
         console.log 'user joined', user.name
 
         userObj = game.userJoin(user.name, user.image);

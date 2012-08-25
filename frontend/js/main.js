@@ -18,7 +18,7 @@ $(function() {
         $("article").hide();
         $("#mainscreen").show();
 
-        countdown($('.countdown_start'), 15);
+        countdown($('.countdown_game'), 15);
         
         $("#round_description").html(features.getDescription(category.feature,category.parity=="-"));
         
@@ -72,13 +72,15 @@ $(function() {
                 $('#winning_user .username').text(winner.name);
                 $('#winner .track_container').empty().append(templates.trackElement(track.title,track.artist,track.image,track.value,track.feature));
                 $('#winner .track_container .display_score').show();
+                countdown($('.countdown_winner'), 15);
             }
             else
             {
                 $('#no_winner').show();
+                countdown($('.countdown_no_winner'), 15);
             }
 
-            countdown($('.countdown_result'), 15);
+            
         }
     }
 
@@ -88,7 +90,7 @@ $(function() {
             $element.text(timeLeft);
             if (timeLeft > 0) {
                 timeLeft--;
-                setTimeout(frameCountdown, 1);
+                setTimeout(frameCountdown, 1000);
             }
         }
         frameCountdown();
@@ -140,6 +142,10 @@ $(function() {
                     socket.on('users', function (users) {
                         console.log('users, count:', users)
                         updateLeaderboard(users);
+                    });
+
+                    socket.on('disconnect', function() {
+                        window.location.reload();
                     });
                 });
                 
