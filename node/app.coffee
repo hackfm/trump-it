@@ -42,22 +42,27 @@ class Game extends EventEmitter
             # find winners. This messes up the ordering, so make sure you sort it by score afterwards
             @users.sort (a, b) ->
                 if (b.value == null)
-                    return 1
-                if (a.value == null)
                     return -1
+                if (a.value == null)
+                    return 1
                 return a.value - b.value
 
             # Add Score to users
             scores = [5, 2, 1]
             i = 0;
-            for score in scores 
-                if (@users.length < i && @users[i].value != null)
+            for score, i in scores 
+                console.log 'debug1', i, score
+                if (@users.length > i && @users[i].value != null)
+                    console.log 'debug', i, score
                     @users[i].score += score
+
 
             # Determin winner, if there is one
             winner = null;
-            if (@users.length > 0 && @users[0].value != null)
-                winner = user[0]
+            if (@users.length > 0)
+                console.log(@users[0].value)
+                if (@users[0].value != null)
+                    winner = @users[0]
 
             # Sort users back to score
             @sortUsers();
@@ -67,7 +72,7 @@ class Game extends EventEmitter
                 console.log 'result: no winner this round'
                 @emit 'results', null, null, @users
             else
-                console.log 'results: ', winner.name, winner.track.name
+                console.log 'results: ', winner.name, winner.track.track
                 @emit 'results', winner, winner.track, @users
         ,15000
 
@@ -129,8 +134,8 @@ io.sockets.on 'connection', (socket) ->
         game.on 'results', onResult
 
         # User has made his choice
-        socket.on 'picked', (track, value) ->
-            console.log('user picked a track', track.name, value)
+        socket.on 'pick', (track, value) ->
+            console.log('user picked a track', track.title, value)
             userObj.track = track
             userObj.value = value
 

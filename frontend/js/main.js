@@ -9,12 +9,6 @@ $(function() {
             console.log('connected');
         });
     
-
-    socket.on('results', function (track, user) {
-        console.log('result', track, user);
-    });
-    
-    
     function selectTracks(tracklist, category, callback) {
         selectedTracks=[tracklist.pop(),tracklist.pop(),tracklist.pop()];
         startRound(selectedTracks,category);
@@ -23,6 +17,7 @@ $(function() {
     function startRound(selectedTracks,category) {
         $("#login").hide();
         $("#mainscreen").show();
+        //$('.result_screen').hide();
         $("#tracks").empty();
         $.each(selectedTracks, function(i, trk) {
             $("#tracks").append(templates.trackElement(trk.artist,trk.track,trk.image,trk.features[category]));
@@ -44,6 +39,7 @@ $(function() {
         });
     }
     
+
     var tracksWithData=[];
     function fetchFeatures(topTracks) {
         if (topTracks.length==0) {
@@ -57,8 +53,24 @@ $(function() {
             fetchFeatures(topTracks);
         });
     }
-    
-    
+
+    function showResults(winner, track, users) {
+        $('#mainscreen').hide();
+        if (winner != null) {
+            $('#winner').show();
+            $('#winning_user img').attr('src', winner.image);
+            $('#winning_user .username').text(winner.name);
+            $('#winning_track img').attr('src', track.image);
+            $('#winning_track .artist').text(track.artist);
+            $('#winning_track .title').text(track.title);
+        }
+        else
+        {
+            $('#no_winner').show();
+        }
+        
+
+    }
     
     $("#login_button").click(function() {
         var username=$("#username").val();
@@ -69,8 +81,13 @@ $(function() {
                 fetchFeatures(topTracks);
                 socket.on('start', function (category) {
                     if (tracksWithData.length<3) return;
-                    console.log(category);
+                    console.log('start',category);
                     selectTracks(tracksWithData, category);
+                });
+
+                socket.on('results', function (winner, track, users) {
+                    console.log('result', winner, track, users);
+                    showResults(winner, track, users);
                 });
             });
         });

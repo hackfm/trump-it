@@ -23,10 +23,16 @@
     <body>
         <article id="login">
            <h1>Login</h1>
-           <p>Log in with your Last.fm username</p>
-           <div class="fs_dataentry">
-             <input type="text" id="username" name="username" value="" /><br />
-             <input type="submit" id="login_button" value="Start" />
+           <div id="login_form">
+               <p>Log in with your Last.fm username</p>
+               <div class="fs_dataentry">
+                 <input type="text" id="username" name="username" value="" /><br />
+                 <input type="submit" id="login_button" value="Start" />
+               </div>
+           </div>
+
+           <div id="login_spinner" style="display:none;">
+
            </div>
         </article>
         <article id="mainscreen">
@@ -34,6 +40,30 @@
             <h1><strong>Fastest</strong> track</h3>
             <div id="tracks">
             </div>
+        </article>
+
+        <article id="winner" class="result_screen" style="display:none;">
+            <h3>And the winner for this round is...</h3>
+
+             <div class="user" id="winning_user">
+                <div class="user_image">
+                    <img class="img" src="" />
+                </div>
+                <div class="username"></div>
+            </div>
+
+            <div class="track" id="winning_track">
+                <div class="track_image">
+                    <img class="img" src="" />
+                </div>
+                <div class="artist">{artist}</div>
+                <div class="title">{track}</div>
+            </div>
+        </article>
+
+        <article id="no_winner" class="result_screen" style="display:none;">
+            <h3>No winner this round :( </h3>
+            <img src="http://ak0.picdn.net/shutterstock/videos/724084/preview/stock-footage-seamless-looping-emoticon-animation-thumbs-down-with-alpha-mask-isolated-on-black.jpg" alt="nooooo :(">
         </article>
         
         <div id="templates" style="display:none;">
