@@ -27,6 +27,7 @@ body {
     max-width:600px;
     margin-left:auto;
     margin-right:auto;
+    position: relative;
 }
 
 article {
@@ -34,16 +35,13 @@ article {
     p {
         padding:10px;
         font-size:1.5em;
-        /*margin-left:20px;*/
     }
     .description {
         padding:10px;
         font-size:1.8em;
-        /*margin-left:20px;*/
     }
     .choose {
         font-size:1.3em;
-        /*margin-left:20px;*/
     }
 }
 
@@ -88,6 +86,7 @@ article {
         border:1px solid @detail;
         float:left;
         margin-right:10px;
+        border-radius:10px;
     }
     background-color: @alt2;
     border: 1px solid @detail;
@@ -118,6 +117,7 @@ article {
         border:1px solid @detail;
         float:left;
         margin-right:10px;
+        border-radius:10px;
     }
     background-color: @alt2;
     border: 1px solid @detail;
@@ -134,7 +134,7 @@ article {
 }
 
 footer {
-    width:90%;
+    /*width:90%;*/
     max-width:600px;
     margin-left:auto;
     margin-right:auto;
@@ -164,4 +164,14 @@ footer {
             color: @background;
         }
     }
+}
+
+.remaining_time {
+    position: absolute;
+    top: 20px;
+    right: 5px;
+    left: auto;
+    display:block;
+    font-size: 2em;
+    color: @detail;
 }

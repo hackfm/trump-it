@@ -19,6 +19,7 @@ body {
   max-width: 600px;
   margin-left: auto;
   margin-right: auto;
+  position: relative;
 }
 article {
   padding-top: 10px;
@@ -26,19 +27,13 @@ article {
 article p {
   padding: 10px;
   font-size: 1.5em;
-  /*margin-left:20px;*/
-
 }
 article .description {
   padding: 10px;
   font-size: 1.8em;
-  /*margin-left:20px;*/
-
 }
 article .choose {
   font-size: 1.3em;
-  /*margin-left:20px;*/
-
 }
 .fs_dataentry {
   width: 80%;
@@ -85,6 +80,7 @@ article .choose {
   border: 1px solid #4c646b;
   float: left;
   margin-right: 10px;
+  border-radius: 10px;
 }
 .track:hover {
   background-color: #b2503d;
@@ -113,6 +109,7 @@ article .choose {
   border: 1px solid #4c646b;
   float: left;
   margin-right: 10px;
+  border-radius: 10px;
 }
 #login_spinner {
   min-height: 65px;
@@ -121,7 +118,8 @@ article .choose {
   padding: 5px;
 }
 footer {
-  width: 90%;
+  /*width:90%;*/
+
   max-width: 600px;
   margin-left: auto;
   margin-right: auto;
@@ -149,4 +147,13 @@ footer .userForLeaderboard .score {
   text-shadow: 0em 0em 0.1em #fff7f5;
   display: block;
   color: #000000;
+}
+.remaining_time {
+  position: absolute;
+  top: 20px;
+  right: 5px;
+  left: auto;
+  display: block;
+  font-size: 2em;
+  color: #4c646b;
 }
