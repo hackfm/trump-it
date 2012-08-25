@@ -94,6 +94,7 @@ var lastfm=function() {
         "getTopTracks":getTopTracks,
         "getUserImage":getUserImage,
         "getAudioFeatures":getAudioFeatures,
-        "getListeningData":getListeningData
+        "getListeningData":getListeningData,
+        "getPreviewMp3":getPreviewMp3
     };
 }();
