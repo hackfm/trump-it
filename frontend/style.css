@@ -82,11 +82,12 @@ article .choose {
   margin-right: 10px;
   border-radius: 10px;
 }
-.winner2, .winner3 {
+.winner2,
+.winner3 {
   /*background-color: @background;
     border: none;*/
 
-  opacity: 0.5;
+  opacity: 0.3;
 }
 .track:hover {
   background-color: #b2503d;
