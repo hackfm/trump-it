@@ -116,7 +116,7 @@ $(function() {
                     });
 
                     socket.on('users', function (users) {
-                        console.log('users, count:', users.lenght)
+                        console.log('users, count:', users)
                         updateLeaderboard(users);
                     });
                 });
