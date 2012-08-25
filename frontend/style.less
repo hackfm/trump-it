@@ -123,4 +123,36 @@ article {
     padding:5px;
 }
 
+footer {
+    width:90%;
+    max-width:600px;
+    min-height:400px;
+    margin-left:auto;
+    margin-right:auto;
+    margin-top: 10px;
 
+    .userForLeaderboard {
+        position: relative;
+        width: 64px;
+        height: 64px;
+        float: left;
+        margin-right: 10px;
+
+        img {
+            position:absolute;
+            border-radius:10px;
+        }
+        .score {
+            position:absolute;
+            width: 64px;
+            height: 64px;
+            line-height: 64px;
+            text-align: center;
+            font-size: 2em;
+            font-weight: bold;
+            text-shadow: 0em 0em 0.1em @foreground;
+            display: block;
+            color: @background;
+        }
+    }
+}
